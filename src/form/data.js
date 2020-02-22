@@ -1,4 +1,4 @@
-export const Form = {
+export const FormData = {
   intro: {
     logo: null,
     header: 'The Ultimate Drunk Test',
@@ -87,7 +87,7 @@ export const Form = {
   ],
   outro: {
     logo: null,
-    header: 'Congrats! You are a drunk person',
-    subheader: "Though, we already said you were in the first place, so why would you fill the quiz anyway?"
+    header: 'YOU DRUNK!',
+    subheader: 'Though, we already said that in the beginning, so why would you fill the quiz anyway? Anyway, have a beer later! Bye!'
   }
 }

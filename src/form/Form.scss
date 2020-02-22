@@ -1,0 +1,148 @@
+.form_container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+
+  .intro_container {
+    padding: 100px;
+
+    &.fadeOut {
+      animation: fadeOut 0.3s ease-in-out forwards;
+    }
+
+    .header {
+      font-size: 54px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    .subheader {
+      font-size: 20px;
+    }
+
+    .button_container {
+      margin: 100px;
+
+      button {
+        background-color: navy;
+        height: 60px;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 20px;
+        padding: 10px 30px;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .outro_container {
+    padding: 100px;
+
+    &.fadeIn {
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .header_container {
+      display: flex;
+      align-items: center;
+
+      .header {
+        font-size: 70px;
+        font-weight: bolder;
+        margin: 20px 0;
+      }
+    }
+
+    .subheader {
+      font-size: 20px;
+    }
+  }
+
+  .question_container {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    width: 100%;
+    padding: 100px 50px;
+
+    &.fadeIn {
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    &.fadeOut {
+      animation: fadeOut 0.3s ease-in-out forwards;
+    }
+
+    &.fadeSlideIn {
+      animation: fadeSlideIn 0.4s ease-in-out forwards;
+    }
+
+    .title {
+      text-align: left;
+      display: flex;
+      align-items: center;
+
+      .id {
+        color: white;
+        font-weight: 700;
+        font-size: 20px;
+        padding-right: 10px;
+        flex-basis: 30px;
+      }
+
+      .question {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+
+    &.fadeSlideOut {
+      animation: fadeSlideOut 0.4s ease-in-out forwards;
+    }
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-900px);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    transform: translateY(900px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
