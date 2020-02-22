@@ -10,12 +10,10 @@ export const FormData = {
       question: () => 'First up, what should we call you?',
       typeAnswer: 'text',
       fieldId: 'firstName'
-
-      // jumpsTo: () => { }
     },
     {
       id: 2,
-      question: (firstName) => { return `Ok ${firstName}, and your surname?` },
+      question: ({ firstName }) => { return `Ok ${firstName}, and your surname?` },
       typeAnswer: 'text',
       fieldId: 'lastName'
     },
@@ -38,7 +36,7 @@ export const FormData = {
       question: () => 'How significant do you think this impacts your ability to function in every-day activities?',
       typeAnswer: 'scale',
       options: [0, 1, 2, 3, 4, 5],
-      labels: ['Not at all', 'Somwhat', 'Very much'],
+      labels: ['Not at all', 'Somewhat', 'Very much'],
       fieldId: 'activities'
     },
     {
@@ -79,7 +77,7 @@ export const FormData = {
     },
     {
       id: 11,
-      question: (firstName) => { return `Great. Now what's your email, ${firstName}?` },
+      question: ({ firstName }) => { return `Great. Now what's your email, ${firstName}?` },
       typeAnswer: 'text',
       fieldId: 'email'
     },

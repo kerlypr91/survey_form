@@ -3,10 +3,6 @@ import { FormData } from './data'
 import './Form.scss'
 
 export default class Form extends React.Component {
-  state = {
-    step: 0 //this means intro
-  }
-
   //   left = 37
   // up = 38
   // right = 39
@@ -16,6 +12,13 @@ export default class Form extends React.Component {
     super(props)
 
     this.lastStep = FormData.steps.length
+    const fieldKeys = FormData.steps.map((item) => item.fieldId)
+    const stateModel = fieldKeys.reduce((a, b) => ((a[b] = null), a), {})
+
+    this.state = {
+      step: 0, //this means intro
+      ...stateModel
+    }
   }
 
   componentDidMount() {
@@ -95,6 +98,23 @@ export default class Form extends React.Component {
     }, 300)
   }
 
+  handleTextInputChange = (stateKey) => (event) => {
+    this.setState({
+      [stateKey]: event.target.value
+    })
+  }
+
+  handleScaleChange = (stateKey, value) => () => {
+    this.setState(
+      {
+        [stateKey]: value
+      },
+      () => {
+        this.handleNextStep()
+      }
+    )
+  }
+
   renderIntro = () => {
     const { intro } = FormData
 
@@ -138,6 +158,44 @@ export default class Form extends React.Component {
     )
   }
 
+  renderAnswer = (stepInfo) => {
+    const { id, question, typeAnswer, options, labels, fieldId } = stepInfo
+
+    if (typeAnswer === 'text') {
+      return (
+        <input
+          type='text'
+          placeholder='Type your answer here'
+          autoFocus
+          onChange={this.handleTextInputChange(fieldId)}
+        />
+      )
+    }
+
+    if (typeAnswer === 'scale') {
+      return (
+        <div className='scale'>
+          <div className='options'>
+            {options.map((item) => (
+              <div
+                className='option'
+                onClick={this.handleScaleChange(fieldId, item)}>
+                {item}
+              </div>
+            ))}
+          </div>
+          <div className='labels'>
+            {labels.map((item) => (
+              <div className='label'>{item}</div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    return null
+  }
+
   renderStep = () => {
     const { step } = this.state
     const stepInfo = FormData.steps.find((item) => item.id === step)
@@ -153,9 +211,9 @@ export default class Form extends React.Component {
         }}>
         <div className='title'>
           <div className='id'>{id}</div>
-          <div className='question'>{question()}</div>
+          <div className='question'>{question(this.state)}</div>
         </div>
-        <div className='answer'></div>
+        <div className='answer'>{this.renderAnswer(stepInfo)}</div>
       </div>
     )
   }
