@@ -9,19 +9,25 @@ export const FormData = {
       id: 1,
       question: () => 'First up, what should we call you?',
       typeAnswer: 'text',
-      fieldId: 'firstName'
+      fieldId: 'firstName',
+      required: true,
+      displaySubmit: true
     },
     {
       id: 2,
       question: ({ firstName }) => { return `Ok ${firstName}, and your surname?` },
       typeAnswer: 'text',
-      fieldId: 'lastName'
+      fieldId: 'lastName',
+      required: true,
+      displaySubmit: true
     },
     {
       id: 3,
       question: () => 'Now, how old were you when you had your first drink?',
       typeAnswer: 'number',
-      fieldId: 'age'
+      fieldId: 'age',
+      required: true,
+      displaySubmit: true
     },
     {
       id: 4,
@@ -29,7 +35,9 @@ export const FormData = {
       typeAnswer: 'scale',
       options: [0, 1, 2, 3, 4, 5],
       labels: ['Not at all', 'Very much'],
-      fieldId: 'ability'
+      fieldId: 'ability',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 5,
@@ -37,7 +45,9 @@ export const FormData = {
       typeAnswer: 'scale',
       options: [0, 1, 2, 3, 4, 5],
       labels: ['Not at all', 'Somewhat', 'Very much'],
-      fieldId: 'activities'
+      fieldId: 'activities',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 6,
@@ -45,47 +55,58 @@ export const FormData = {
       typeAnswer: 'scale',
       options: [0, 1, 2, 3, 4, 5],
       labels: ['Disagree strongly', 'Agree strongly'],
-      fieldId: 'statement'
+      fieldId: 'statement',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 7,
       question: () => 'What types of things do you usually do on the weekend',
       typeAnswer: 'multipleChoice',
       options: ['Go out and drink tequila', 'Binge drinking', 'Watch movie and have beer', 'Go wine tasting', 'Netflix & beer'],
-      fieldId: 'weekend'
+      fieldId: 'weekend',
+      required: true
     },
     {
       id: 8,
       question: () => 'What day would you say you drink the most',
       typeAnswer: 'oneChoice',
       options: ['Friday', 'Saturday', 'Other'],
-      fieldId: 'day'
+      fieldId: 'day',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 9,
       question: () => 'Which drink do you prefer?',
       typeAnswer: 'oneChoice',
       options: ['Beer', 'Whisky', 'Jägerbomb', 'Wine', 'Vodka', 'Other'],
-      fieldId: 'drink'
+      fieldId: 'drink',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 10,
       question: () => 'Are you a cool peruvian?',
       typeAnswer: 'oneChoice',
       options: ['Yes', 'No'],
-      fieldId: 'peruvian'
+      fieldId: 'peruvian',
+      required: true,
+      displaySubmit: false
     },
     {
       id: 11,
       question: ({ firstName }) => { return `Great. Now what's your email, ${firstName}?` },
       typeAnswer: 'text',
-      fieldId: 'email'
+      fieldId: 'email',
+      required: true,
+      displaySubmit: true
     },
     // todo: add func to allow type what other
   ],
   outro: {
     logo: null,
     header: 'YOU DRUNK!',
-    subheader: 'Though, we already said that in the beginning, so why would you fill the quiz anyway? Anyway, have a beer later! Bye!'
+    subheader: 'Though, we already said that in the beginning, so why would you fill the quiz anyway? Have a beer later! Bye!'
   }
 }

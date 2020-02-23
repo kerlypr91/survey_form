@@ -119,6 +119,53 @@ export default class Form extends React.Component {
     }, 300)
   }
 
+  handleChoiceListChange = (stateKey, value, typeChoice) => () => {
+    let { [stateKey]: newValue } = this.state
+
+    if (typeChoice === 'oneChoice') {
+      newValue = value
+    } else {
+      if (!newValue) {
+        newValue = []
+      }
+
+      if (newValue.includes(value)) {
+        newValue = newValue.filter((item) => item !== value)
+      } else {
+        newValue.push(value)
+      }
+    }
+
+    this[`choice_option_${stateKey}_${value}`].classList.add('blink')
+
+    setTimeout(() => {
+      this.setState(
+        {
+          [stateKey]: newValue
+        },
+        () => {
+          if (typeChoice === 'multipleChoice') {
+            return
+          }
+
+          this.handleNextStep()
+        }
+      )
+    }, 300)
+  }
+
+  handleChoiceListMouseOver = (fieldId, bulletValue) => () => {
+    this[
+      `choice_bullet_${fieldId}_${bulletValue}`
+    ].innerHTML = `key ${bulletValue}`
+    this[`choice_bullet_${fieldId}_${bulletValue}`].classList.add('hover')
+  }
+
+  handleChoiceListMouseLeave = (fieldId, bulletValue) => () => {
+    this[`choice_bullet_${fieldId}_${bulletValue}`].innerHTML = bulletValue
+    this[`choice_bullet_${fieldId}_${bulletValue}`].classList.remove('hover')
+  }
+
   renderIntro = () => {
     const { intro } = FormData
 
@@ -205,6 +252,67 @@ export default class Form extends React.Component {
               </div>
             ))}
           </div>
+        </div>
+      )
+    }
+
+    if (['multipleChoice', 'oneChoice'].includes(typeAnswer)) {
+      const bulletArray = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
+
+      return (
+        <div className='choice-list'>
+          {typeAnswer === 'multipleChoice' ? (
+            <div className='legend'>Choose as many as you like</div>
+          ) : null}
+          {options.map((item, index) => {
+            const activeClass =
+              typeAnswer === 'multipleChoice'
+                ? value.includes(item)
+                  ? 'selected'
+                  : ''
+                : value === item
+                ? 'selected'
+                : ''
+
+            const isSelected = activeClass === 'selected'
+
+            return (
+              <div
+                className={`choice ${activeClass}`}
+                ref={(element) => {
+                  this[`choice_option_${fieldId}_${item}`] = element
+                }}
+                key={`choice_option_${fieldId}_${item}`}
+                onMouseOver={this.handleChoiceListMouseOver(
+                  fieldId,
+                  bulletArray[index]
+                )}
+                onMouseLeave={this.handleChoiceListMouseLeave(
+                  fieldId,
+                  bulletArray[index]
+                )}
+                onClick={this.handleChoiceListChange(
+                  fieldId,
+                  item,
+                  typeAnswer
+                )}>
+                <div className='bullet_container'>
+                  <div
+                    className='bullet'
+                    ref={(element) => {
+                      this[
+                        `choice_bullet_${fieldId}_${bulletArray[index]}`
+                      ] = element
+                    }}>
+                    {bulletArray[index]}
+                  </div>
+                </div>
+
+                <div className='text'>{item}</div>
+                {isSelected ? <div className='check'></div> : null}
+              </div>
+            )
+          })}
         </div>
       )
     }
