@@ -8,12 +8,24 @@ export default class Form extends React.Component {
   // right = 39
   //   down = 40
 
+  typesOfAnswered = {
+    valid: 'valid',
+    invalid: 'invalid',
+    unanswered: 'unanswered'
+  }
+
   constructor(props) {
     super(props)
 
     this.lastStep = FormData.steps.length
     const fieldKeys = FormData.steps.map((item) => item.fieldId)
-    const stateModel = fieldKeys.reduce((a, b) => ((a[b] = ''), a), {})
+    const stateModel = fieldKeys.reduce(
+      (a, b) => (
+        (a = { ...a, [b]: '', [`${b}Valid`]: this.typesOfAnswered.unanswered }),
+        a
+      ),
+      {}
+    )
 
     this.state = {
       step: 0, //this means intro
@@ -55,6 +67,8 @@ export default class Form extends React.Component {
     const { keyCode } = event
     const { step } = this.state
 
+    // when step 1 is already activated, then enable arrow keycode detect
+
     // enter
     if (keyCode === 13) {
       if (step === 0) {
@@ -83,8 +97,22 @@ export default class Form extends React.Component {
 
   handleNextStep = () => {
     let { step } = this.state
-    const newStep = step + 1
+    const stepInfo = FormData.steps.find((item) => item.id === step)
+    const { id, question, typeAnswer, options, labels, fieldId } = stepInfo
+    const { [fieldId]: value } = this.state
 
+    if (
+      (typeAnswer === 'multipleChoice' && value.length === 0) ||
+      (typeAnswer !== 'multipleChoice' && !value)
+    ) {
+      this.setState({
+        [`${fieldId}Valid`]: this.typesOfAnswered.invalid
+      })
+
+      return
+    }
+
+    const newStep = step + 1
     const stepElement = this[`step_container_${step}`]
 
     if (stepElement) {
@@ -93,14 +121,18 @@ export default class Form extends React.Component {
 
     setTimeout(() => {
       this.setState({
-        step: newStep
+        step: newStep,
+        [`${fieldId}Valid`]: this.typesOfAnswered.valid
       })
     }, 300)
   }
 
   handleTextInputChange = (stateKey) => (event) => {
     this.setState({
-      [stateKey]: event.target.value
+      [stateKey]: event.target.value,
+      [`${stateKey}Valid`]: event.target.value
+        ? this.typesOfAnswered.valid
+        : this.typesOfAnswered.unanswered
     })
   }
 
@@ -110,7 +142,8 @@ export default class Form extends React.Component {
     setTimeout(() => {
       this.setState(
         {
-          [stateKey]: value
+          [stateKey]: value,
+          [`${stateKey}Valid`]: this.typesOfAnswered.valid
         },
         () => {
           this.handleNextStep()
@@ -121,9 +154,11 @@ export default class Form extends React.Component {
 
   handleChoiceListChange = (stateKey, value, typeChoice) => () => {
     let { [stateKey]: newValue } = this.state
+    let validValue
 
     if (typeChoice === 'oneChoice') {
       newValue = value
+      validValue = this.typesOfAnswered.valid
     } else {
       if (!newValue) {
         newValue = []
@@ -134,6 +169,11 @@ export default class Form extends React.Component {
       } else {
         newValue.push(value)
       }
+
+      validValue =
+        newValue.length > 0
+          ? this.typesOfAnswered.valid
+          : this.typesOfAnswered.unanswered
     }
 
     this[`choice_option_${stateKey}_${value}`].classList.add('blink')
@@ -141,7 +181,8 @@ export default class Form extends React.Component {
     setTimeout(() => {
       this.setState(
         {
-          [stateKey]: newValue
+          [stateKey]: newValue,
+          [`${stateKey}Valid`]: validValue
         },
         () => {
           if (typeChoice === 'multipleChoice') {
@@ -320,6 +361,57 @@ export default class Form extends React.Component {
     return null
   }
 
+  renderRequiredContainer = (stepInfo) => {
+    const { displaySubmit, required, fieldId, typeAnswer } = stepInfo
+    const { [`${fieldId}Valid`]: validValue } = this.state
+
+    if (!required) {
+      return null
+    }
+
+    let hiddenClass = ''
+
+    if (validValue !== this.typesOfAnswered.invalid) {
+      return null
+      // hiddenClass = 'hidden'
+    }
+
+    return (
+      <div className={`required_container ${hiddenClass}`}>
+        Please fill this in
+      </div>
+    )
+  }
+
+  renderSubmitButton = (stepInfo) => {
+    const { displaySubmit, required, fieldId, typeAnswer } = stepInfo
+    const { [fieldId]: value } = this.state
+
+    if (!displaySubmit) {
+      return null
+    }
+
+    let hiddenClass = ''
+
+    if (
+      (required && !value && typeAnswer !== 'multipleChoice') ||
+      (required && value.length === 0 && typeAnswer === 'multipleChoice')
+    ) {
+      hiddenClass = 'hidden'
+    }
+
+    return (
+      <div className={`submit_container ${hiddenClass}`}>
+        <button onClick={this.handleNextStep}>
+          OK <div className='check'></div>
+        </button>
+        <span>
+          press <b>ENTER</b>
+        </span>
+      </div>
+    )
+  }
+
   renderStep = () => {
     const { step } = this.state
     const stepInfo = FormData.steps.find((item) => item.id === step)
@@ -337,6 +429,8 @@ export default class Form extends React.Component {
           <div className='question'>{question(this.state)}</div>
         </div>
         <div className='answer'>{this.renderAnswer(stepInfo)}</div>
+        {this.renderRequiredContainer(stepInfo)}
+        {this.renderSubmitButton(stepInfo)}
       </div>
     )
   }

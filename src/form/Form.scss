@@ -299,6 +299,59 @@
       }
     }
 
+    .required_container {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: red;
+
+      animation: submitFadeSlideIn 0.2s ease-in-out forwards;
+    }
+
+    .submit_container {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      animation: submitFadeSlideIn 0.2s ease-in-out forwards;
+
+      &.hidden {
+        animation: submitFadeSlideOut 0.2s ease-in-out forwards;
+      }
+
+      button {
+        background-color: navy;
+        height: 40px;
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        margin-right: 20px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+
+        .check {
+          flex: 0 0 20px;
+          margin-left: 10px;
+
+          &:after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 16px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+
     &.fadeSlideOut {
       animation: fadeSlideOut 0.4s ease-in-out forwards;
     }
@@ -319,6 +372,28 @@
 @keyframes fadeSlideIn {
   from {
     transform: translateY(900px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes submitFadeSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes submitFadeSlideIn {
+  from {
+    transform: translateY(20px);
     opacity: 0;
   }
   to {

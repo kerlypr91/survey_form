@@ -65,7 +65,8 @@ export const FormData = {
       typeAnswer: 'multipleChoice',
       options: ['Go out and drink tequila', 'Binge drinking', 'Watch movie and have beer', 'Go wine tasting', 'Netflix & beer'],
       fieldId: 'weekend',
-      required: true
+      required: true,
+      displaySubmit: true
     },
     {
       id: 8,
