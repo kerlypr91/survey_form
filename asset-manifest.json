@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/survey_form/static/css/main.e3d243a5.chunk.css",
+    "main.js": "/survey_form/static/js/main.e1025200.chunk.js",
+    "main.js.map": "/survey_form/static/js/main.e1025200.chunk.js.map",
+    "runtime-main.js": "/survey_form/static/js/runtime-main.970659f1.js",
+    "runtime-main.js.map": "/survey_form/static/js/runtime-main.970659f1.js.map",
+    "static/js/2.7d76601f.chunk.js": "/survey_form/static/js/2.7d76601f.chunk.js",
+    "static/js/2.7d76601f.chunk.js.map": "/survey_form/static/js/2.7d76601f.chunk.js.map",
+    "index.html": "/survey_form/index.html",
+    "precache-manifest.59fc2abf266d925e4252247ba1e6699a.js": "/survey_form/precache-manifest.59fc2abf266d925e4252247ba1e6699a.js",
+    "service-worker.js": "/survey_form/service-worker.js",
+    "static/css/main.e3d243a5.chunk.css.map": "/survey_form/static/css/main.e3d243a5.chunk.css.map",
+    "static/js/2.7d76601f.chunk.js.LICENSE.txt": "/survey_form/static/js/2.7d76601f.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/survey_form/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.970659f1.js",
+    "static/js/2.7d76601f.chunk.js",
+    "static/css/main.e3d243a5.chunk.css",
+    "static/js/main.e1025200.chunk.js"
+  ]
+}
