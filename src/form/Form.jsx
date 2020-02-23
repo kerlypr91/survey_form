@@ -13,7 +13,7 @@ export default class Form extends React.Component {
 
     this.lastStep = FormData.steps.length
     const fieldKeys = FormData.steps.map((item) => item.fieldId)
-    const stateModel = fieldKeys.reduce((a, b) => ((a[b] = null), a), {})
+    const stateModel = fieldKeys.reduce((a, b) => ((a[b] = ''), a), {})
 
     this.state = {
       step: 0, //this means intro
@@ -27,17 +27,19 @@ export default class Form extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.step !== this.state.step) {
-      if (this.state.step === 1) {
-        const stepElement = this[`step_container_1`]
+      // if (this.state.step === 1) {
+      //   const stepElement = this[`step_container_1`]
 
-        if (stepElement) {
-          stepElement.classList.add('fadeIn')
-          return
-        }
-      }
+      //   if (stepElement) {
+      //     stepElement.classList.add('fadeIn')
+      //     return
+      //   }
+      // }
 
       if (this.state.step > this.lastStep) {
         this.outroElement.classList.add('fadeIn')
+
+        console.log('responses', this.state)
         return
       }
 
@@ -52,8 +54,6 @@ export default class Form extends React.Component {
   handleKeyBoardPress = (event) => {
     const { keyCode } = event
     const { step } = this.state
-
-    console.log('keyCode', keyCode)
 
     // enter
     if (keyCode === 13) {
@@ -105,14 +105,18 @@ export default class Form extends React.Component {
   }
 
   handleScaleChange = (stateKey, value) => () => {
-    this.setState(
-      {
-        [stateKey]: value
-      },
-      () => {
-        this.handleNextStep()
-      }
-    )
+    this[`scale_option_${stateKey}_${value}`].classList.add('blink')
+
+    setTimeout(() => {
+      this.setState(
+        {
+          [stateKey]: value
+        },
+        () => {
+          this.handleNextStep()
+        }
+      )
+    }, 300)
   }
 
   renderIntro = () => {
@@ -160,13 +164,15 @@ export default class Form extends React.Component {
 
   renderAnswer = (stepInfo) => {
     const { id, question, typeAnswer, options, labels, fieldId } = stepInfo
+    const { [fieldId]: value } = this.state
 
-    if (typeAnswer === 'text') {
+    if (['text', 'number'].includes(typeAnswer)) {
       return (
         <input
-          type='text'
+          type={typeAnswer}
           placeholder='Type your answer here'
           autoFocus
+          value={value}
           onChange={this.handleTextInputChange(fieldId)}
         />
       )
@@ -176,17 +182,27 @@ export default class Form extends React.Component {
       return (
         <div className='scale'>
           <div className='options'>
-            {options.map((item) => (
-              <div
-                className='option'
-                onClick={this.handleScaleChange(fieldId, item)}>
-                {item}
-              </div>
-            ))}
+            {options.map((item) => {
+              const activeClass = value === item ? 'selected ' : ''
+
+              return (
+                <div
+                  className={`option ${activeClass}`}
+                  ref={(element) => {
+                    this[`scale_option_${fieldId}_${item}`] = element
+                  }}
+                  key={`scale_option_${fieldId}_${item}`}
+                  onClick={this.handleScaleChange(fieldId, item)}>
+                  {item}
+                </div>
+              )
+            })}
           </div>
           <div className='labels'>
             {labels.map((item) => (
-              <div className='label'>{item}</div>
+              <div className='label' key={`scale_label_${fieldId}_${item}`}>
+                {item}
+              </div>
             ))}
           </div>
         </div>
@@ -199,7 +215,6 @@ export default class Form extends React.Component {
   renderStep = () => {
     const { step } = this.state
     const stepInfo = FormData.steps.find((item) => item.id === step)
-    console.log('stepInfo', stepInfo)
     const { id, question, typeAnswer, options, labels } = stepInfo
 
     return (

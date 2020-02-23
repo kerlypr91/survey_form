@@ -20,8 +20,8 @@ export const FormData = {
     {
       id: 3,
       question: () => 'Now, how old were you when you had your first drink?',
-      typeAnswer: 'text',
-      fieldId: 'lastName'
+      typeAnswer: 'number',
+      fieldId: 'age'
     },
     {
       id: 4,

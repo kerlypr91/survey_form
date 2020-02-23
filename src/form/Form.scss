@@ -109,7 +109,14 @@
       width: 100%;
       text-align: left;
 
-      input[type='text'] {
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input[type='text'],
+      input[type='number'] {
         outline: none;
         border: none;
         font-size: 28px;
@@ -117,10 +124,12 @@
         caret-color: white;
         color: white;
         line-height: 20px;
+        -moz-appearance: textfield;
+        opacity: 1;
 
         &::placeholder {
           color: white;
-          opacity: 0.5;
+          opacity: 0.6;
         }
       }
 
@@ -143,28 +152,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid white;
-            background-color: lightseagreen;
+            background-color: #0cab9f;
             color: white;
+            border-right: 1.5px solid white;
 
             &:last-child {
-              border-top-right-radius: 10px;
-              border-bottom-right-radius: 10px;
+              border-top-right-radius: 8px;
+              border-bottom-right-radius: 8px;
+              border-right: none;
             }
 
             &:first-child {
-              border-top-left-radius: 10px;
-              border-bottom-left-radius: 10px;
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
             }
 
             &:hover {
-              background-color: rgb(135, 238, 233);
+              background-color: #89dcd5;
               font-weight: 700;
 
-              &:last-child {
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-              }
+              // &:last-child {
+              //   border-top-right-radius: 10px;
+              //   border-bottom-right-radius: 10px;
+              // }
+            }
+
+            &.selected {
+              background-color: white;
+              color: #0cab9f;
+            }
+
+            &.blink {
+              animation: blink 0.2s ease-in-out forwards;
             }
           }
         }
@@ -236,5 +255,24 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0% {
+    background-color: #0cab9f;
+    color: white;
+  }
+  25% {
+    background-color: white;
+    color: #0cab9f;
+  }
+  50% {
+    background-color: #0cab9f;
+    color: white;
+  }
+  100% {
+    background-color: white;
+    color: #0cab9f;
   }
 }

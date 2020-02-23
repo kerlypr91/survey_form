@@ -12,6 +12,7 @@ html,
   justify-content: center;
 
   overflow: hidden;
+  font-family: 'Oxygen' !important;
 }
 
 code {
@@ -19,12 +20,13 @@ code {
 }
 
 body {
-  background-image: url(https://wallpaperaccess.com/full/414449.jpg);
+  background-image: url(https://www.jakpost.travel/wimages/large/212-2125602_popular-material-design-hd.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 * {
+  font-family: 'Oxygen';
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
